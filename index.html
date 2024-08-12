@@ -16,10 +16,29 @@
     <div id="result_gyro">ここにデータを表示</div>
     <canvas id="gyroChart" width="400" height="200"></canvas>
 
+    <canvas id="canvas" width="300" height="400"></canvas>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var aX = 0, aY = 0, aZ = 0;                     // 加速度の値を入れる変数を3個用意
             var alpha = 0, beta = 0, gamma = 0;
+
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+
+            class Ball {
+                constructor() {
+                    this.x = 150;                           // x座標の初期値
+                    this.y = 200;                           // y座標の初期値
+                    this.radius = 20;                       // 半径の初期値
+                    this.color = "rgb(0, 0, 255)";          // 色の初期値
+                    this.sp = 3;                            // 速さの係数
+                }
+            }
+
+            var player = new Ball();
+
+
             const accelerationData = {
                 x: [],
                 y: [],
@@ -53,6 +72,7 @@
             var timer = window.setInterval(() => {
                 displayData();
                 updateCharts();
+                drawPlayer();
             }, 100); // 100msごとに（1秒間に約10回）
 
             function displayData() {
@@ -189,6 +209,32 @@
             function updateCharts() {
                 accelerationChart.update();
                 gyroChart.update();
+            }
+            function drawPlayer() {
+                var os = navigator.platform;                // OS名の取得
+                if (os === "iPhone" || os === "iPad" || os === "iPod") {     // iOSなら
+                    aX *= -1;                               // 加速度の正負を反転させる
+                    aY *= -1;                               // a *= b は a = a * b の意味
+                    aZ *= -1;
+                }
+                player.x -= player.sp * aX;                 // プレイヤのx座標を更新（a -= b は a = a - b の意味）
+                player.y += player.sp * aY;                 // プレイヤのy座標を更新（a += b は a = a + b の意味）
+                if (player.x < 0) {                          // xが0未満なら
+                    player.x = 0;                               // xを0にする（それより左に行かない）
+                } else if (player.x > canvas.width) {        // xがcanvasの幅以上なら
+                    player.x = canvas.width;                    // xをcanvasの幅の値にする（それより右に行かない）
+                }
+                if (player.y < 0) {                          // yが0未満なら
+                    player.y = 0;                               // yを0にする（それより上に行かない）
+                } else if (player.y > canvas.height) {       // yがcanvasの高さ以上なら
+                    player.y = canvas.height;                   // yをcanvasの高さの値にする（それより下に行かない）
+                }
+                context.clearRect(0, 0, canvas.width, canvas.height);   // canvasの内容を消す clearRect(x, y, w, h)
+                context.beginPath();                        // 描画開始
+                context.arc(player.x, player.y, player.radius,  // 円を描く arc(x, y, 半径, 開始角度, 終了角度)
+                    0, 2 * Math.PI);                // 角度の単位はラジアン（2π = 360度）で指定
+                context.fillStyle = player.color            // 塗りつぶす色の設定
+                context.fill();                             // 塗る
             }
         });
     </script>
