@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>加速度・ジャイロ取得demo</title>
+</head>
+
+<body>
+    <button id="start_btn">ゲームを開始する</button>
+    <style>
+        #start_btn {
+            margin-top: 40vh;
+            margin-left: 45vw;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var startBtn = document.getElementById("start_btn");
+            startBtn.addEventListener("click", () => {
+                if (window.DeviceMotionEvent && window.DeviceMotionEvent.requestPermission) {
+                    DeviceMotionEvent.requestPermission()
+                        .then((state) => {
+                            if (state === 'granted') {
+                                window.location.href = "./content/index.html";
+                            } else {
+                                location.reload();
+                            }
+                        })
+                        .catch((err) => console.error(err));
+                } else {
+                    window.location.href = "./content/index.html";
+                }
+            })
+        })
+    </script>
+
+</body>
+
+</html>
