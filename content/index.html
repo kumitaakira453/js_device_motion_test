@@ -81,13 +81,17 @@
             }, false);
 
             // 指定時間ごとに繰り返し実行される setInterval(実行する内容, 間隔[ms]) タイマーを設定
-            var timer = window.setInterval(() => {
+            var graphtimer = window.setInterval(() => {
                 displayData();
                 updateCharts();
+            }, 33); // 33msごとに
+            var timer = window.setInterval(() => {
                 drawPlayer();
                 displayTime();
                 drawMeteo();
             }, 33); // 33msごとに
+
+
 
             function displayTime() {
                 gameTime += 1;
