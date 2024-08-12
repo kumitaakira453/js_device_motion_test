@@ -220,14 +220,14 @@
                 player.x -= player.sp * aX;                 // プレイヤのx座標を更新（a -= b は a = a - b の意味）
                 player.y += player.sp * aY;                 // プレイヤのy座標を更新（a += b は a = a + b の意味）
                 if (player.x - player.radius < 0) {                          // xが0未満なら
-                    player.x = 0;                               // xを0にする（それより左に行かない）
+                    player.x = player.radius;                              // xを0にする（それより左に行かない）
                 } else if (player.x + player.radius > canvas.width) {        // xがcanvasの幅以上なら
-                    player.x = canvas.width;                    // xをcanvasの幅の値にする（それより右に行かない）
+                    player.x = canvas.width - player.radius;                    // xをcanvasの幅の値にする（それより右に行かない）
                 }
                 if (player.y - player.radius < 0) {                          // yが0未満なら
-                    player.y = 0;                               // yを0にする（それより上に行かない）
+                    player.y = player.radius;                               // yを0にする（それより上に行かない）
                 } else if (player.y + player.radius > canvas.height) {       // yがcanvasの高さ以上なら
-                    player.y = canvas.height;                   // yをcanvasの高さの値にする（それより下に行かない）
+                    player.y = canvas.height - player.radius;                   // yをcanvasの高さの値にする（それより下に行かない）
                 }
                 context.clearRect(0, 0, canvas.width, canvas.height);   // canvasの内容を消す clearRect(x, y, w, h)
                 context.beginPath();                        // 描画開始
