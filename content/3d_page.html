@@ -50,6 +50,12 @@
             alpha = event.alpha || 0;
             beta = event.beta || 0;
             gamma = event.gamma || 0;
+            // iosに対応する
+            var os = navigator.platform;                // OS名の取得
+            if (os === "iPhone" || os === "iPad" || os === "iPod") {                                 // 加速度の正負を反転させる
+                beta *= -1;
+                gamma *= -1;
+            }
             console.log('Gyro:', alpha, beta, gamma);
         }, false);
 
@@ -72,7 +78,7 @@
 </head>
 
 <body>
-    <canvas id="myCanvas"></canvas>
+    <canvas id="myCanvas" style="margin-top:20vh;"></canvas>
 </body>
 
 </html>
