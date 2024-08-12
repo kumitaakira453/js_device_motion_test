@@ -33,14 +33,14 @@
                     DeviceMotionEvent.requestPermission()
                         .then((state) => {
                             if (state === 'granted') {
-                                window.location.href = "./content/index.html";
+                                window.location.href = "./content/index.html#score";
                             } else {
                                 location.reload();
                             }
                         })
                         .catch((err) => console.error(err));
                 } else {
-                    window.location.href = "./content/index.html";
+                    window.location.href = "./content/index.html#score";
                 }
             })
         })
