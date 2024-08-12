@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script type="importmap">
+    {
+        "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js"
+        }
+    }
+    </script>
+    <script type="module">
+        import * as THREE from "three";
+
+        const width = 960;
+        const height = 540;
+
+        // レンダラーを作成
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#myCanvas')
+        });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(devicePixelRatio);
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+        camera.position.set(0, 0, 1000);
+
+        // 箱を作成
+        const geometry = new THREE.BoxGeometry(500, 500, 500);
+        const material = new THREE.MeshStandardMaterial({ color: 0x0000FF });
+        const box = new THREE.Mesh(geometry, material);
+        scene.add(box);
+
+        // 平行光源
+        const light = new THREE.DirectionalLight(0xFFFFFF);
+        light.intensity = 2;
+        light.position.set(1, 1, 1);
+        scene.add(light);
+
+        // 初期値
+        let alpha = 0, beta = 0, gamma = 0;
+
+        // デバイスの方向を取得
+        window.addEventListener("deviceorientation", (event) => {
+            alpha = event.alpha || 0;
+            beta = event.beta || 0;
+            gamma = event.gamma || 0;
+            console.log('Gyro:', alpha, beta, gamma);
+        }, false);
+
+        // アニメーションループ
+        function tick() {
+            requestAnimationFrame(tick);
+
+            // ジャイロセンサーの値に基づいて立方体を回転させる
+            box.rotation.x = THREE.MathUtils.degToRad(beta); // 上下の傾き
+            box.rotation.y = THREE.MathUtils.degToRad(gamma); // 左右の傾き
+            box.rotation.z = THREE.MathUtils.degToRad(alpha); // 回転
+
+            // レンダリング
+            renderer.render(scene, camera);
+        }
+
+        // 初回実行
+        tick();
+    </script>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+</body>
+
+</html>
