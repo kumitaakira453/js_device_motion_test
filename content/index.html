@@ -10,7 +10,7 @@
 
 <body>
     <div id="score"></div>
-    <button id="restart" 　style="display:none;">もう一度プレイする</button>
+    <button id="restart" style="display:none;">もう一度プレイする</button>
     <canvas id="canvas" width="400" height="400"></canvas>
 
     <p>加速度センサー</p>
@@ -19,7 +19,7 @@
     <p>ジャイロセンサー</p>
     <div id="result_gyro">ここにデータを表示</div>
     <canvas id="gyroChart" width="400" height="200"></canvas>
-    <a href="./3d_page.html"><button>3D描画テストページ</button></a>
+    <a href="./3d_page.html"><button style="margin-bottom: 10vh;">3D描画テストページ</button></a>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var aX = 0, aY = 0, aZ = 0;                     // 加速度の値を入れる変数を3個用意
